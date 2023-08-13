@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  padding: 0;
+  margin: 0;
+  @apply bg-primary-light;
+}
+
+#app {
+  width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
