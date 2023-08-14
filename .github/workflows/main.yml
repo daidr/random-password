@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '16.x'
-      - name: Run pnpm install
+      - name: install pnpm 
         run: npm install -g pnpm
       - run: pnpm install
       - run: pnpm build
