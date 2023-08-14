@@ -70,16 +70,30 @@ const onPointerUp = (event: PointerEvent) => {
                 <div class="slider__protip">{{ value }}</div>
             </div>
         </div>
+        <input type="number" v-model="value" :min="min" :max="max" />
     </div>
 </template>
 
 <style scoped lang="scss">
 .range-input-wrapper {
     @apply w-full relative select-none;
+    @apply flex items-center gap-2;
 }
 
 .slider-wrapper {
-    @apply px-2;
+    @apply px-2 flex-grow;
+}
+
+input {
+    @apply border border-2 border-primary/30 text-sm;
+    @apply rounded-2xl text-primary text-center outline-none;
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+        margin: 0;
+    }
 }
 
 .slider {
@@ -128,7 +142,7 @@ const onPointerUp = (event: PointerEvent) => {
         @apply transform-gpu -translate-x-1/2 -translate-y-15px scale-80;
         @apply text-primary px-2;
         @apply rounded-lg border-2 border border-primary/0;
-        @apply transition duration-300;
+        @apply transition duration-300 opacity-0;
     }
 
     &:hover,
@@ -138,7 +152,7 @@ const onPointerUp = (event: PointerEvent) => {
         }
 
         .slider__protip {
-            @apply -translate-y-full;
+            @apply -translate-y-full opacity-100;
             @apply border-primary/50 border-2 bg-white/80 scale-100;
         }
     }
