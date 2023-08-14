@@ -24,6 +24,6 @@ jobs:
         with:
           message: update PROD
           branch: PROD
-          dir: build
+          dir: dist
           history: false
           force: true
