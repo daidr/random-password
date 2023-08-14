@@ -125,11 +125,10 @@ const onPointerUp = (event: PointerEvent) => {
 
     .slider__protip {
         @apply absolute -top-3 left-[var(--precent)];
-        @apply transform-gpu -translate-x-1/2 -translate-y-0;
-        @apply bg-white/80 text-primary px-2;
-        @apply border-primary/50 border border-2 rounded-lg;
+        @apply transform-gpu -translate-x-1/2 -translate-y-15px scale-80;
+        @apply text-primary px-2;
+        @apply rounded-lg border-2 border border-primary/0;
         @apply transition duration-300;
-        @apply opacity-0;
     }
 
     &:hover,
@@ -139,7 +138,8 @@ const onPointerUp = (event: PointerEvent) => {
         }
 
         .slider__protip {
-            @apply opacity-100 -translate-y-full;
+            @apply -translate-y-full;
+            @apply border-primary/50 border-2 bg-white/80 scale-100;
         }
     }
 }
