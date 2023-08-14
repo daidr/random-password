@@ -1,0 +1,28 @@
+name: build and publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - name: Run yarn install
+        run: yarn
+      - run: pnpm build
+
+      - name: Release to PROD Branch
+        uses: casperdcl/push-dir@v1
+        with:
+          message: update PROD
+          branch: PROD
+          dir: build
+          history: false
+          force: true
