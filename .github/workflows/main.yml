@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '16.x'
       - name: Run pnpm install
-        run: wget -qO- https://get.pnpm.io/install.sh | sh -
+        run: npm install -g pnpm
       - run: pnpm build
 
       - name: Release to PROD Branch
