@@ -16,6 +16,7 @@ jobs:
           node-version: '16.x'
       - name: Run pnpm install
         run: npm install -g pnpm
+      - run: pnpm install
       - run: pnpm build
 
       - name: Release to PROD Branch
