@@ -15,7 +15,7 @@ const copy = () => {
 
 <template>
     <div class="password-box-wrapper">
-        <contenteditable tag="span" v-model="password" :no-html="true" :no-nl="true" :class="{
+        <contenteditable tag="span" class="outline-none" v-model="password" :no-html="true" :no-nl="true" :class="{
             'w-full': password.trim().length === 0
         }" />
         <div class="action-area">
