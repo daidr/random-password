@@ -7,7 +7,7 @@ import { useDebounceFn } from '@vueuse/core'
 import { generatePassword, checkSecurity } from './utils';
 
 const password = ref('');
-const passwordLength = ref(10);
+const passwordLength = ref(16);
 const config = reactive({
   includeNumber: true,
   includeLowercase: true,
