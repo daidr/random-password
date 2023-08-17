@@ -85,7 +85,7 @@ const onPointerUp = (event: PointerEvent) => {
 }
 
 input {
-    @apply border border-2 border-primary/30 text-sm;
+    @apply border border-2 border-primary/30 text-sm h-6 w-12;
     @apply rounded-2xl text-primary text-center outline-none;
     -moz-appearance: textfield;
     &::-webkit-outer-spin-button,
@@ -138,6 +138,7 @@ input {
     }
 
     .slider__protip {
+        @apply hidden;
         @apply absolute -top-3 left-[var(--precent)];
         @apply transform-gpu -translate-x-1/2 -translate-y-15px scale-80;
         @apply text-primary px-2;
