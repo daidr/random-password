@@ -116,6 +116,11 @@ watch(password, (val: string) => {
       </div>
     </div>
   </main>
+  <footer>
+    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">
+      京ICP备2021028678号-4
+    </a>
+  </footer>
 </template>
 
 <style scoped lang="scss">
@@ -125,8 +130,15 @@ main {
   @apply bg-white;
   @apply p-3;
   @apply rounded-3xl;
-  @apply flex flex-col gap-4;
+  @apply flex flex-col gap-4 relative;
+  @apply <sm: mt-15;
   margin: 0 auto;
+
+  &::after {
+    @apply block absolute -top-5 left-0 right-0 text-center;
+    @apply content-['密码生成器'] transform-gpu -translate-y-full;
+    @apply pointer-events-none font-bold text-primary text-4xl;
+  }
 }
 
 .input-wrapper {
@@ -189,5 +201,14 @@ main {
       @apply text-sm opacity-70;
     }
   }
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  @apply text-primary;
+  @apply text-center;
 }
 </style>
