@@ -100,10 +100,10 @@ export const generatePassword = ({
     const hasSelectedTypes = numbers || lowercase || uppercase || special;
 
     // Check if excluded characters cover all available characters of the selected types
-    const excludedNumbers = numbers && '0123456789'.split('').every(char => ignore.includes(char));
-    const excludedLowercase = lowercase && 'abcdefghijklmnopqrstuvwxyz'.split('').every(char => ignore.includes(char));
-    const excludedUppercase = uppercase && 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').every(char => ignore.includes(char));
-    const excludedSpecial = special && '@#$%*&~.'.split('').every(char => ignore.includes(char));
+    const excludedNumbers = numbers && CHARACTERS.number.split('').every(char => ignore.includes(char));
+    const excludedLowercase = lowercase && CHARACTERS.lower.split('').every(char => ignore.includes(char));
+    const excludedUppercase = uppercase && CHARACTERS.upper.split('').every(char => ignore.includes(char));
+    const excludedSpecial = special && CHARACTERS.special.split('').every(char => ignore.includes(char));
 
     if (!hasSelectedTypes) {
         return "请至少选择一种字符类型来生成密码"
@@ -112,7 +112,6 @@ export const generatePassword = ({
     if (excludedNumbers || excludedLowercase || excludedUppercase || excludedSpecial) {
         return "所选字符类型已被排除，无法生成密码。请调整设置"
     }
-
 
     let password = ""
     const allowedCharacters = {
@@ -128,22 +127,26 @@ export const generatePassword = ({
     if (numbers) password += allowedCharacters.number[Math.floor(Math.random() * allowedCharacters.number.length)];
     if (special) password += allowedCharacters.special[Math.floor(Math.random() * allowedCharacters.special.length)];
 
-    // Adjust length to account for the characters already added
-    length -= (lowercase ? 1 : 0) + (uppercase ? 1 : 0) + (numbers ? 1 : 0) + (special ? 1 : 0);
-
-    // Generate remaining characters
-    const scaleSum = Object.keys(scale).reduce((sum, key) => sum + (allowedCharacters[key as keyof typeof scale].length > 0 ? scale[key as keyof typeof scale] : 0), 0);
+    // If the password is not long enough, add random characters
+    const scaleSum = Object.values(scale).reduce((sum, value) => sum + value, 0)
     while (password.length < length) {
-        const random = Math.random() * scaleSum;
-        if (random < scale.lower) {
-            password += allowedCharacters.lower[Math.floor(Math.random() * allowedCharacters.lower.length)];
-        } else if (random < scale.upper) {
-            password += allowedCharacters.upper[Math.floor(Math.random() * allowedCharacters.upper.length)];
-        } else if (random < scale.number) {
-            password += allowedCharacters.number[Math.floor(Math.random() * allowedCharacters.number.length)];
-        } else if (random < scale.special) {
-            password += allowedCharacters.special[Math.floor(Math.random() * allowedCharacters.special.length)];
+        const random = Math.random() * scaleSum
+        if (random < scale.lower && allowedCharacters.lower.length > 0) {
+            password += allowedCharacters.lower[Math.floor(Math.random() * allowedCharacters.lower.length)]
+        }
+        if (random < scale.upper && allowedCharacters.upper.length > 0) {
+            password += allowedCharacters.upper[Math.floor(Math.random() * allowedCharacters.upper.length)]
+        }
+        if (random < scale.number && allowedCharacters.number.length > 0) {
+            password += allowedCharacters.number[Math.floor(Math.random() * allowedCharacters.number.length)]
+        }
+        if (random < scale.special && allowedCharacters.special.length > 0) {
+            password += allowedCharacters.special[Math.floor(Math.random() * allowedCharacters.special.length)]
         }
     }
+
+    // Randomly shuffle the password
+    password = password.split('').sort(() => Math.random() - 0.5).join('')
+
     return password
 }
