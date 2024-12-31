@@ -61,7 +61,7 @@ export const checkSecurity = (password: string): SecurityItem[] => {
     return security
 }
 
-const scale = {
+const scale: Record<'lower' | 'upper' | 'number' | 'special', number> = {
     lower: 1,
     upper: 1,
     number: 0.9,
@@ -103,25 +103,28 @@ export const generatePassword = ({
         number: numbers ? removeChars(CHARACTERS.number, ignore) : "",
         special: special ? removeChars(CHARACTERS.special, ignore) : ""
     }
-    if (allowedCharacters.lower.length === 0 && allowedCharacters.upper.length === 0 && allowedCharacters.number.length === 0 && allowedCharacters.special.length === 0) {
-        return "无法生成"
-    }
-    const _scale = {} as typeof scale
-    let scaleSum: number = 0;
-    for (const key of Object.keys(scale) as Array<keyof typeof scale>) {
-        if (!allowedCharacters[key]) continue
-        _scale[key] = scaleSum += scale[key]
-    }
+
+    // Ensure at least one character from each selected type
+    if (lowercase) password += allowedCharacters.lower[Math.floor(Math.random() * allowedCharacters.lower.length)];
+    if (uppercase) password += allowedCharacters.upper[Math.floor(Math.random() * allowedCharacters.upper.length)];
+    if (numbers) password += allowedCharacters.number[Math.floor(Math.random() * allowedCharacters.number.length)];
+    if (special) password += allowedCharacters.special[Math.floor(Math.random() * allowedCharacters.special.length)];
+
+    // Adjust length to account for the characters already added
+    length -= (lowercase ? 1 : 0) + (uppercase ? 1 : 0) + (numbers ? 1 : 0) + (special ? 1 : 0);
+
+    // Generate remaining characters
+    const scaleSum = Object.keys(scale).reduce((sum, key) => sum + (allowedCharacters[key as keyof typeof scale].length > 0 ? scale[key as keyof typeof scale] : 0), 0);
     while (password.length < length) {
-        const random = Math.random() * scaleSum
-        if (random < _scale.lower) {
-            password += allowedCharacters.lower[Math.floor(Math.random() * allowedCharacters.lower.length)]
-        } else if (random < _scale.upper) {
-            password += allowedCharacters.upper[Math.floor(Math.random() * allowedCharacters.upper.length)]
-        } else if (random < _scale.number) {
-            password += allowedCharacters.number[Math.floor(Math.random() * allowedCharacters.number.length)]
-        } else if (random < _scale.special) {
-            password += allowedCharacters.special[Math.floor(Math.random() * allowedCharacters.special.length)]
+        const random = Math.random() * scaleSum;
+        if (random < scale.lower) {
+            password += allowedCharacters.lower[Math.floor(Math.random() * allowedCharacters.lower.length)];
+        } else if (random < scale.upper) {
+            password += allowedCharacters.upper[Math.floor(Math.random() * allowedCharacters.upper.length)];
+        } else if (random < scale.number) {
+            password += allowedCharacters.number[Math.floor(Math.random() * allowedCharacters.number.length)];
+        } else if (random < scale.special) {
+            password += allowedCharacters.special[Math.floor(Math.random() * allowedCharacters.special.length)];
         }
     }
     return password

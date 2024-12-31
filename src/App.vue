@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue';
+import { reactive, ref, watch, computed } from 'vue';
 import PasswordBox from './components/PasswordBox.vue';
 import RangeInput from './components/RangeInput.vue';
 import SwitchInput from './components/SwitchInput.vue';
@@ -56,6 +56,15 @@ watch(password, (val: string) => {
   debouncedCheckSecurity(val);
 });
 
+const minPasswordLength = computed(() => {
+  let count = 0;
+  if (config.includeNumber) count++;
+  if (config.includeLowercase) count++;
+  if (config.includeUppercase) count++;
+  if (config.includeSymbol) count++;
+  return count > 0 ? count : 1; // Ensure at least 1
+});
+
 </script>
 
 <template>
@@ -65,7 +74,7 @@ watch(password, (val: string) => {
       <span class="label">
         密码长度：
       </span>
-      <RangeInput v-model="passwordLength" :min="1" :max="100" />
+      <RangeInput v-model="passwordLength" :min="minPasswordLength" :max="100" />
     </div>
     <div class="input-wrapper">
       <span class="label">
