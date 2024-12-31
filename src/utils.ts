@@ -96,6 +96,24 @@ export const generatePassword = ({
     special,
     ignore
 }: PasswordOptions) => {
+    // Check if any character types are selected
+    const hasSelectedTypes = numbers || lowercase || uppercase || special;
+
+    // Check if excluded characters cover all available characters of the selected types
+    const excludedNumbers = numbers && '0123456789'.split('').every(char => ignore.includes(char));
+    const excludedLowercase = lowercase && 'abcdefghijklmnopqrstuvwxyz'.split('').every(char => ignore.includes(char));
+    const excludedUppercase = uppercase && 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').every(char => ignore.includes(char));
+    const excludedSpecial = special && '@#$%*&~.'.split('').every(char => ignore.includes(char));
+
+    if (!hasSelectedTypes) {
+        return "请至少选择一种字符类型来生成密码"
+    }
+
+    if (excludedNumbers || excludedLowercase || excludedUppercase || excludedSpecial) {
+        return "所选字符类型已被排除，无法生成密码。请调整设置"
+    }
+
+
     let password = ""
     const allowedCharacters = {
         lower: lowercase ? removeChars(CHARACTERS.lower, ignore) : "",
